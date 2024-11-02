@@ -1,24 +1,57 @@
 <template>
-    <div class="add-task-container">
-        <h1>Añadir Tarea</h1>
-        <div class="input-group">
-            <input 
-                v-model="newTask" 
-                @keyup.enter="addTask" 
-                placeholder="Añadir nueva tarea" 
-                class="task-input"
-            />
-            <button @click="addTask" class="add-button">Añadir</button>
-        </div>
-
-        <div v-if="tasks.length > 0" class="task-list">
-            <div v-for="task in tasks" :key="task.id" class="task-item">
-                <span :class="{ completed: task.completed }">{{ task.todo }}</span>
-                <div>
-                    <button @click="toggleTaskCompletion(task)">
-                        {{ task.completed ? 'Desmarcar' : 'Completar' }}
+    <div class="container my-5">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-dark text-white text-center">
+                <h3 class="h4 mb-0">Gestor de Tareas</h3>
+            </div>
+            <div class="card-body p-4">
+                <div class="input-group mb-4">
+                    <input 
+                        v-model="newTask" 
+                        @keyup.enter="addTask" 
+                        placeholder="Escribe una tarea..." 
+                        class="form-control form-control-lg rounded-start" 
+                        autofocus
+                    />
+                    <button @click="addTask" class="btn btn-success btn-lg rounded-end">
+                        <i class="bi bi-plus-lg"></i> Añadir
                     </button>
-                    <button @click="deleteTask(task)">Eliminar</button>
+                </div>
+
+                <div v-if="tasks.length > 0" class="list-group">
+                    <div 
+                        v-for="task in tasks" 
+                        :key="task.id" 
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3"
+                    >
+                        <div class="d-flex flex-column">
+                            <span :class="{ 'text-decoration-line-through text-muted': task.completed }" class="fs-5">
+                                {{ task.todo }}
+                            </span>
+                            <small :class="task.completed ? 'text-success' : 'text-warning'">
+                                {{ task.completed ? 'Completada' : 'Pendiente' }}
+                            </small>
+                        </div>
+                        <div>
+                            <button 
+                                @click="toggleTaskCompletion(task)" 
+                                class="btn btn-outline-primary btn-sm me-2"
+                            >
+                                <i :class="task.completed ? 'bi bi-check-circle-fill' : 'bi bi-circle'"></i>
+                                {{ task.completed ? 'Desmarcar' : 'Completar' }}
+                            </button>
+                            <button 
+                                @click="deleteTask(task)" 
+                                class="btn btn-outline-danger btn-sm"
+                            >
+                                <i class="bi bi-trash-fill"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div v-else class="text-center text-muted mt-4">
+                    <i class="bi bi-clipboard-check" style="font-size: 2rem;"></i>
+                    <p class="mt-2">No hay tareas en la lista. ¡Añade una nueva!</p>
                 </div>
             </div>
         </div>
@@ -30,8 +63,8 @@ export default {
     name: "AddTask",
     data() {
         return {
-            newTask: "", // Campo de entrada para la nueva tarea
-            tasks: [],   // Lista de tareas locales
+            newTask: "",
+            tasks: [],
         };
     },
     methods: {
@@ -41,20 +74,15 @@ export default {
             const newTask = {
                 todo: this.newTask,
                 completed: false,
-                id: Date.now(), 
+                id: Date.now(),
             };
 
-            // Añadir la nueva tarea al inicio de la lista
             this.tasks.unshift(newTask);
-            this.newTask = ""; // Limpiar el campo de entrada después de agregar
+            this.newTask = "";
         },
-
-        // Elimina una tarea específica de la lista
         deleteTask(task) {
             this.tasks = this.tasks.filter((t) => t.id !== task.id);
         },
-
-        // Cambia el estado de la tarea entre completada y no completada
         toggleTaskCompletion(task) {
             task.completed = !task.completed;
         },
@@ -63,48 +91,7 @@ export default {
 </script>
 
 <style scoped>
-.add-task-container {
-    padding: 20px;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.input-group {
-    display: flex;
-    margin-bottom: 10px;
-}
-
-.task-input {
-    flex-grow: 1;
-    padding: 8px;
-    margin-right: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.add-button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-}
-
-.task-list {
-    margin-top: 20px;
-}
-
-.task-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.completed {
+.text-decoration-line-through {
     text-decoration: line-through;
-    color: gray;
 }
 </style>

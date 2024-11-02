@@ -1,35 +1,58 @@
 <template>
   <div id="app">
-    <!-- Barra de navegación con enlaces a diferentes rutas -->
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/addtask">Agregar Tarea</router-link> 
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <router-link class="navbar-brand" to="/">
+          <img src="@/assets/logo.png" alt="Vue logo" style="width: 30px;">
+          Gestor de Tareas
+        </router-link>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <router-link class="nav-link" to="/">Inicio</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/addtask">Añadir Tarea</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/tasklist">Lista de Tareas</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/combined">Vista Combinada</router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
-    <!-- Aquí se cargará el componente correspondiente a la ruta seleccionada -->
-    <router-view/>
+
+    <!-- Router View -->
+    <router-view></router-view>
   </div>
 </template>
 
+<script>
+export default {
+  name: 'App'
+}
+</script>
+
 <style>
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
-}
-
-nav a {
+.router-link-active {
   font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+  color: #42b983 !important;
 }
 </style>
